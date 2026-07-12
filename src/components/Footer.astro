@@ -1,0 +1,31 @@
+---
+interface Props {
+  siteName?: string;
+  description?: string;
+}
+const { siteName = 'Melhores Reviews', description = '' } = Astro.props;
+---
+
+<footer id="site-footer" class="bg-[#d9730d] text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="text-center max-w-3xl mx-auto">
+      <h2 class="font-sans font-bold text-2xl md:text-3xl tracking-tight mb-4">{siteName}</h2>
+      <p class="text-amber-50 text-sm md:text-base leading-relaxed mb-8">{description}</p>
+      <div class="flex flex-wrap justify-center gap-6 md:gap-8 mb-10 text-sm font-medium border-t border-amber-600/50 pt-8">
+        <a href="/" class="hover:text-amber-200 transition-colors">Home</a>
+        <a href="/blog" class="hover:text-amber-200 transition-colors">Blog</a>
+        <a href="/sobre" class="hover:text-amber-200 transition-colors">Sobre</a>
+        <a href="/contato" class="hover:text-amber-200 transition-colors">Contato</a>
+        <a href="/privacidade" class="hover:text-amber-200 transition-colors">Privacidade</a>
+        <a href="/termos" class="hover:text-amber-200 transition-colors">Termos</a>
+      </div>
+      <div class="border-t border-amber-600/50 pt-6 text-xs text-amber-100 mt-2">
+        <p>&copy; {new Date().getFullYear()} {siteName}. Todos os direitos reservados.</p>
+        <p class="mt-1">Powered by <a href="https://e-launch.com.br" class="underline hover:text-white">E-Launch</a> &middot; CMS + GitHub + Vercel</p>
+      </div>
+    </div>
+  </div>
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 w-10 h-10 bg-white/20 hover:bg-white/30 backdrop-blur rounded-full flex items-center justify-center transition-colors z-40">
+    <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"/></svg>
+  </button>
+</footer>

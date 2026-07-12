@@ -1,0 +1,20 @@
+{
+  "siteName": "Melhores Reviews",
+  "siteDescription": "Reviews imparciais e analises detalhadas dos melhores produtos do mercado. Guia de compras 2026 atualizado.",
+  "primaryColor": "#ea580c",
+  "logoUrl": "",
+  "favicon": "",
+  "navigation": [
+    { "label": "Home", "href": "/" },
+    { "label": "Blog", "href": "/blog" },
+    { "label": "Categorias", "href": "/categorias" },
+    { "label": "Sobre", "href": "/sobre" },
+    { "label": "Contato", "href": "/contato" }
+  ],
+  "pages": {
+    "home": { "title": "As Melhores Analises de Produtos", "content": "" },
+    "sobre": { "title": "Sobre Nos", "content": "<p>Somos uma equipe apaixonada por tecnologia e produtos de qualidade.</p>" },
+    "contato": { "title": "Contato", "content": "" }
+  },
+  "_plugins": { "head": "", "body": "", "enabled": [] }
+}

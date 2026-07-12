@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Entre em Contato" currentPath="/contato">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      {/* Contact Info Column */}
+      <div class="lg:col-span-5 space-y-8 text-left">
+        <div class="space-y-4">
+          <h1 class="font-sans font-bold text-3xl md:text-4xl text-gray-900 tracking-tight">
+            Entre em Contato
+          </h1>
+          <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
+            Tem alguma dúvida sobre um produto, sugestão de análise ou quer anunciar em nosso portal? Preencha o formulário e nossa equipe de suporte responderá o mais breve possível.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+              <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-400 font-bold uppercase tracking-wider">E-mail para Contato</span>
+              <span class="text-sm sm:text-base text-gray-900 font-semibold">contato@melhoresreviews.com.br</span>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+              <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-400 font-bold uppercase tracking-wider">Tempo de Resposta</span>
+              <span class="text-sm sm:text-base text-gray-900 font-semibold">Geralmente em menos de 24 horas úteis</span>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+              <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+              </svg>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-400 font-bold uppercase tracking-wider">Segurança de Dados</span>
+              <span class="text-xs sm:text-sm text-gray-500">Garantimos sigilo absoluto das suas informações de contato.</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Social mock elements or quick note */}
+        <div class="bg-amber-50/50 p-5 rounded-2xl border border-amber-100/50 text-xs text-amber-800 leading-relaxed">
+          <strong>Dica:</strong> Se você tiver dúvidas específicas de compra para o seu caso de uso (ex: "Qual notebook rodará meu programa X"), faça sua pergunta diretamente na seção de comentários do próprio artigo! Nossos especialistas respondem lá diariamente.
+        </div>
+      </div>
+
+      {/* Form Column */}
+      <div class="lg:col-span-7">
+        <div class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-10 shadow-sm">
+          {/* Success Message */}
+          <div id="contact-success" class="hidden text-center py-10 space-y-4">
+            <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto text-3xl border border-green-100">
+              <svg class="w-8 h-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+              </svg>
+            </div>
+            <h3 class="font-sans font-bold text-xl text-gray-900">
+              Mensagem Enviada!
+            </h3>
+            <p class="text-gray-500 text-sm max-w-md mx-auto leading-relaxed">
+              Obrigado por entrar em contato! Recebemos sua mensagem com sucesso e já encaminhamos para o analista responsável. Responderemos em breve.
+            </p>
+            <button
+              id="send-another-btn"
+              class="inline-flex items-center space-x-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl transition-colors cursor-pointer text-xs"
+            >
+              Enviar Nova Mensagem
+            </button>
+          </div>
+
+          {/* Contact Form */}
+          <form id="contact-form" class="space-y-6 text-left">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Name field */}
+              <div class="space-y-2">
+                <label class="text-xs font-bold text-gray-700 tracking-wide uppercase">Nome Completo</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Ex: João da Silva"
+                  class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs text-gray-950 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
+                />
+              </div>
+
+              {/* Email field */}
+              <div class="space-y-2">
+                <label class="text-xs font-bold text-gray-700 tracking-wide uppercase">Seu E-mail</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Ex: joao@email.com"
+                  class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs text-gray-950 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
+                />
+              </div>
+            </div>
+
+            {/* Subject field */}
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-700 tracking-wide uppercase">Assunto</label>
+              <input
+                type="text"
+                name="subject"
+                required
+                placeholder="Ex: Dúvida de compra, Sugestão de Review..."
+                class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs text-gray-950 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
+              />
+            </div>
+
+            {/* Message field */}
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-700 tracking-wide uppercase">Sua Mensagem</label>
+              <textarea
+                name="message"
+                required
+                rows="6"
+                placeholder="Escreva sua mensagem com detalhes..."
+                class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 px-4 text-xs text-gray-950 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
+              ></textarea>
+            </div>
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              class="w-full inline-flex items-center justify-center space-x-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 disabled:bg-gray-300 text-white font-bold py-4 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer text-sm"
+            >
+              <span id="btn-text">Enviar Mensagem</span>
+              <svg id="send-icon" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+              <div id="btn-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const successDiv = document.getElementById('contact-success');
+  const btnText = document.getElementById('btn-text');
+  const sendIcon = document.getElementById('send-icon');
+  const spinner = document.getElementById('btn-spinner');
+  const sendAnotherBtn = document.getElementById('send-another-btn');
+
+  if (form && successDiv && btnText && sendIcon && spinner) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Show spinner and disable
+      btnText.textContent = 'Enviando...';
+      sendIcon.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      
+      setTimeout(() => {
+        // Reset states
+        form.reset();
+        btnText.textContent = 'Enviar Mensagem';
+        sendIcon.classList.remove('hidden');
+        spinner.classList.add('hidden');
+        
+        // Toggle view
+        form.classList.add('hidden');
+        successDiv.classList.remove('hidden');
+      }, 1500);
+    });
+  }
+
+  if (sendAnotherBtn && form && successDiv) {
+    sendAnotherBtn.addEventListener('click', () => {
+      successDiv.classList.add('hidden');
+      form.classList.remove('hidden');
+    });
+  }
+</script>

@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { blogPosts } from '../data/posts';
+
+// Find the featured post (which is the main laptop post)
+const featuredPost = blogPosts.find(p => p.slug === 'melhores-notebooks-2026') || blogPosts[0];
+
+// Grid posts (excluding the featured one)
+const gridPosts = blogPosts.filter(p => p.id !== '1');
+---
+
+<Layout title="Melhores Reviews - Produtos com Desconto" currentPath="/">
+  <div class="space-y-16 pb-16">
+    {/* Hero Section */}
+    <section class="bg-gradient-to-b from-amber-50/70 to-transparent pt-12 pb-6 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto text-center space-y-6">
+        {/* Tag "Ofertas Imperdíveis" matching image */}
+        <div class="inline-flex items-center space-x-2 bg-red-50 text-red-700 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border border-red-100 shadow-3xs">
+          <svg class="w-3.5 h-3.5 text-red-500 fill-red-100 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+          </svg>
+          <span>Ofertas Imperdíveis</span>
+        </div>
+
+        <h1 class="font-sans font-bold text-3xl sm:text-4xl md:text-5xl text-gray-900 tracking-tight leading-tight max-w-4xl mx-auto">
+          Melhores reviews de produtos para você
+        </h1>
+        <p class="text-gray-500 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
+          Análises detalhadas, comparações honestas e as melhores ofertas da internet
+        </p>
+
+        {/* Featured Post Card matching reference image style */}
+        <div class="mt-12 bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 max-w-5xl mx-auto overflow-hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
+            {/* Image Column */}
+            <div class="md:col-span-6 relative aspect-video md:aspect-auto min-h-[250px] md:min-h-[400px] bg-gray-50">
+              <img
+                src={featuredPost.image}
+                alt={featuredPost.title}
+                referrerPolicy="no-referrer"
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+
+            {/* Content Column */}
+            <div class="md:col-span-6 p-6 sm:p-10 flex flex-col justify-between text-left">
+              <div class="space-y-4">
+                {/* Category and details */}
+                <div class="flex items-center space-x-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-amber-50 text-amber-600">
+                    {featuredPost.category}
+                  </span>
+                  <span class="text-xs text-gray-400 font-medium">
+                    {featuredPost.readTime} de leitura
+                  </span>
+                  <span class="text-xs text-gray-400 font-medium">
+                    {featuredPost.date}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h2 class="font-sans font-bold text-xl sm:text-2xl text-gray-900 leading-snug hover:text-amber-500 transition-colors cursor-pointer">
+                  <a href={`/blog/${featuredPost.slug}`}>{featuredPost.title}</a>
+                </h2>
+
+                {/* Excerpt */}
+                <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
+                  {featuredPost.description}
+                </p>
+              </div>
+
+              {/* Author info and Action Button */}
+              <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                  <img
+                    src={featuredPost.author.avatar}
+                    alt={featuredPost.author.name}
+                    referrerPolicy="no-referrer"
+                    class="w-10 h-10 rounded-full object-cover ring-2 ring-amber-100"
+                  />
+                  <div>
+                    <span class="block text-xs sm:text-sm font-bold text-gray-900">
+                      {featuredPost.author.name}
+                    </span>
+                    <span class="block text-[10px] sm:text-xs text-gray-400">
+                      {featuredPost.author.role}
+                    </span>
+                  </div>
+                </div>
+
+                <a
+                  href={`/blog/${featuredPost.slug}`}
+                  class="inline-flex items-center justify-center space-x-2 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xs cursor-pointer text-sm"
+                >
+                  <span>Ler Artigo Completo</span>
+                  <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Grid of Latest Reviews Section */}
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
+        <div class="flex items-center space-x-2">
+          <span class="text-xl md:text-2xl">📝</span>
+          <h2 class="font-sans font-bold text-lg md:text-2xl text-gray-900 tracking-tight">
+            Últimas Análises
+          </h2>
+        </div>
+        <a 
+          href="/blog"
+          class="text-amber-600 hover:text-amber-700 text-sm font-bold flex items-center space-x-1 transition-colors group cursor-pointer"
+        >
+          <span>Ver todos</span>
+          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+
+      {/* 3x3 Card Grid matching reference image */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {gridPosts.map((post) => (
+          <ReviewCard post={post} />
+        ))}
+      </div>
+    </section>
+
+    {/* Callout box to buy on Amazon / promo banner */}
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl p-8 sm:p-12 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="space-y-3 max-w-2xl text-center md:text-left">
+          <span class="bg-amber-400/30 text-white border border-amber-300/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Economize Agora
+          </span>
+          <h2 class="font-sans font-bold text-2xl sm:text-3xl tracking-tight">
+            Procurando os menores preços em tecnologia e eletrônicos?
+          </h2>
+          <p class="text-amber-50 text-sm sm:text-base opacity-95">
+            Nossas análises monitoram diariamente as maiores lojas online como Amazon, Shopee e Mercado Livre para trazer as ofertas com desconto real mais atrativas do momento.
+          </p>
+        </div>
+        <a
+          href="/blog"
+          class="bg-white text-orange-600 hover:bg-amber-50 font-bold px-8 py-4 rounded-2xl shadow-md hover:shadow-lg transition-all shrink-0 cursor-pointer text-base text-center"
+        >
+          Explorar Ofertas
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>

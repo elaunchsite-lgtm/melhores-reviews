@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom CSS utilities and polish */
+body {
+  font-family: var(--font-sans);
+  background-color: #FAF9F5; /* Warm aesthetic off-white canvas matching affiliate image background vibe */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* ===== CMS Shortcode Blocks ===== */
+.pros-cons-wrap { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin:2rem 0; }
+.pros-box, .cons-box { border-radius:12px; padding:1.5rem; }
+.pros-box { background:#f0fdf4; border:1px solid #bbf7d0; }
+.cons-box { background:#fef2f2; border:1px solid #fecaca; }
+.pros-box h3, .cons-box h3 { font-size:1.1rem; margin-bottom:.75rem; }
+.pros-box li, .cons-box li { margin-bottom:.3rem; font-size:.95rem; }
+
+.specs-table { margin:2rem 0; padding:1.5rem; background:#fffbeb; border:1px solid #fde68a; border-radius:12px; }
+.specs-table h3 { font-size:1.1rem; margin-bottom:1rem; }
+.specs-table table { width:100%; border-collapse:collapse; }
+.specs-table td { padding:.5rem .75rem; border-bottom:1px solid #fde68a; font-size:.9rem; }
+
+.affiliate-cta-card { margin:2rem 0; padding:2rem; background:linear-gradient(135deg,#ea580c,#f97316); border-radius:16px; color:#fff; text-align:center; }
+.affiliate-cta-card h3 { font-size:1.3rem; margin-bottom:.5rem; color:#fff; }
+.affiliate-cta-card p { opacity:.9; margin-bottom:1rem; }
+.affiliate-img { width:100%; max-width:200px; border-radius:12px; margin:0 auto 1rem; display:block; }
+.affiliate-btns { display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin:1rem 0; }
+.affiliate-btn { display:inline-block; padding:.7rem 1.5rem; border-radius:10px; font-weight:600; font-size:.9rem; text-decoration:none; transition:all .2s; background:#fff; color:#ea580c; }
+.affiliate-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15); }
+.affiliate-btn.whatsapp { background:#25D366; color:#fff; }
+.affiliate-btn.secondary { background:rgba(255,255,255,.2); color:#fff; }
+
+.promo-banner { margin:2rem 0; padding:2rem; background:linear-gradient(135deg,#dc2626,#b91c1c); border-radius:16px; color:#fff; text-align:center; animation:pulse 2s infinite; }
+.promo-banner h3 { font-size:1.3rem; color:#fff; }
+.promo-banner .affiliate-btn { margin-top:.75rem; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.85} }
+
+@media(max-width:640px){ .pros-cons-wrap{grid-template-columns:1fr} }

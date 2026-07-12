@@ -1,0 +1,259 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ReviewCard from '../../components/ReviewCard.astro';
+import { blogPosts } from '../../data/posts';
+
+// Get unique categories dynamically
+const availableCategories = ['Todas', ...Array.from(new Set(blogPosts.map(p => p.category)))];
+---
+
+<Layout title="Blog de Reviews" currentPath="/blog">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 min-h-screen text-left">
+    {/* Header section */}
+    <div class="text-center md:text-left space-y-3">
+      <h1 class="font-sans font-bold text-3xl md:text-4xl text-gray-900 tracking-tight flex items-center justify-center md:justify-start space-x-2">
+        <svg class="w-8 h-8 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+        <span>Nosso Blog de Reviews</span>
+      </h1>
+      <p class="text-gray-500 text-sm md:text-base max-w-2xl">
+        Navegue pelas nossas análises imparciais e detalhadas. Encontre especificações completas, comparativos técnicos, prós e contras e os links com os menores preços do mercado.
+      </p>
+    </div>
+
+    {/* Control panel: Search, Category selection, Sort */}
+    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+        {/* Search Input */}
+        <div class="relative md:col-span-6">
+          <svg class="absolute left-4 top-3.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.636Z" />
+          </svg>
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Pesquise por produtos, marcas, categorias ou especificações..."
+            class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 pl-12 pr-4 text-sm text-gray-900 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
+          />
+        </div>
+
+        {/* Sort Selector */}
+        <div class="relative md:col-span-3">
+          <div class="absolute left-4 top-3.5 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+            </svg>
+          </div>
+          <select
+            id="sort-select"
+            class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-3 pl-11 pr-8 text-sm text-gray-700 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans appearance-none cursor-pointer"
+          >
+            <option value="date">Mais Recentes</option>
+            <option value="rating">Melhor Avaliados</option>
+          </select>
+        </div>
+
+        {/* Quick Stats */}
+        <div class="md:col-span-3 text-right text-xs text-gray-400 font-medium py-2 md:py-0 px-2">
+          Mostrando <span id="stats-count" class="font-bold text-gray-900">{blogPosts.length}</span> análises encontradas
+        </div>
+      </div>
+
+      {/* Categories Chips */}
+      <div class="border-t border-gray-50 pt-5">
+        <div class="flex items-center space-x-2 text-xs text-gray-400 font-semibold mb-3 uppercase tracking-wider">
+          <svg class="w-3.5 h-3.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+          </svg>
+          <span>Filtrar por Categoria</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {availableCategories.map((category) => (
+            <button
+              data-category={category}
+              class="blog-category-chip px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all bg-gray-50 text-gray-600 hover:bg-gray-100"
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Grid of filtered results */}
+    <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      {blogPosts.map((post) => (
+        <div 
+          class="blog-post-card-wrapper" 
+          data-id={post.id}
+          data-category={post.category.toLowerCase()}
+          data-date={post.date}
+          data-rating={post.rating}
+          data-title={post.title.toLowerCase()}
+          data-desc={post.description.toLowerCase()}
+        >
+          <ReviewCard post={post} />
+        </div>
+      ))}
+    </div>
+
+    {/* Empty State */}
+    <div id="empty-state" class="hidden text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-3xs space-y-4">
+      <div class="w-16 h-16 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto text-2xl font-bold animate-pulse">
+        🔍
+      </div>
+      <h3 class="font-sans font-bold text-lg text-gray-900">
+        Nenhuma análise encontrada
+      </h3>
+      <p class="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed">
+        Não encontramos resultados para a sua busca. Experimente usar termos mais gerais ou limpe os filtros.
+      </p>
+      <button
+        id="clear-filters-btn"
+        class="inline-flex items-center space-x-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-5 rounded-xl transition-colors cursor-pointer text-xs"
+      >
+        Limpar Todos os Filtros
+      </button>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Filter & sort logic for the blog page
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+  const chips = document.querySelectorAll('.blog-category-chip');
+  const wrappers = document.querySelectorAll('.blog-post-card-wrapper');
+  const postsGrid = document.getElementById('posts-grid');
+  const emptyState = document.getElementById('empty-state');
+  const statsCount = document.getElementById('stats-count');
+  const clearBtn = document.getElementById('clear-filters-btn');
+
+  let currentCategory = 'Todas';
+  let searchQuery = '';
+  let currentSort = 'date';
+
+  // Handle initial category from URL if present
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialCategoryParam = urlParams.get('categoria');
+  if (initialCategoryParam) {
+    if (initialCategoryParam === 'casa-e-cozinha') {
+      currentCategory = 'Casa & Cozinha';
+    } else {
+      currentCategory = initialCategoryParam.charAt(0).toUpperCase() + initialCategoryParam.slice(1);
+    }
+  }
+
+  const updateUI = () => {
+    // 1. Update active chips styling
+    chips.forEach(chip => {
+      const cat = chip.getAttribute('data-category');
+      if (cat === currentCategory) {
+        chip.classList.remove('bg-gray-50', 'text-gray-600', 'hover:bg-gray-100');
+        chip.classList.add('bg-amber-500', 'text-white', 'shadow-xs');
+      } else {
+        chip.classList.add('bg-gray-50', 'text-gray-600', 'hover:bg-gray-100');
+        chip.classList.remove('bg-amber-500', 'text-white', 'shadow-xs');
+      }
+    });
+
+    // 2. Filter elements
+    const visibleCards: Element[] = [];
+    wrappers.forEach(wrap => {
+      const category = wrap.getAttribute('data-category') || '';
+      const title = wrap.getAttribute('data-title') || '';
+      const desc = wrap.getAttribute('data-desc') || '';
+      
+      const categoryMatches = currentCategory === 'Todas' || category === currentCategory.toLowerCase();
+      const searchMatches = searchQuery.trim() === '' || 
+                            title.includes(searchQuery.toLowerCase()) || 
+                            desc.includes(searchQuery.toLowerCase()) ||
+                            category.includes(searchQuery.toLowerCase());
+
+      if (categoryMatches && searchMatches) {
+        (wrap as HTMLElement).style.display = 'block';
+        visibleCards.push(wrap);
+      } else {
+        (wrap as HTMLElement).style.display = 'none';
+      }
+    });
+
+    // 3. Sort elements
+    if (currentSort === 'rating') {
+      visibleCards.sort((a, b) => {
+        const ratingA = parseFloat(a.getAttribute('data-rating') || '0');
+        const ratingB = parseFloat(b.getAttribute('data-rating') || '0');
+        return ratingB - ratingA;
+      });
+    } else {
+      visibleCards.sort((a, b) => {
+        const dateStrA = a.getAttribute('data-date') || '';
+        const dateStrB = b.getAttribute('data-date') || '';
+        
+        const [dayA, monthA, yearA] = dateStrA.split('/').map(Number);
+        const [dayB, monthB, yearB] = dateStrB.split('/').map(Number);
+        
+        const dateA = new Date(yearA, monthA - 1, dayA);
+        const dateB = new Date(yearB, monthB - 1, dayB);
+        
+        return dateB.getTime() - dateA.getTime();
+      });
+    }
+
+    // Re-append sorted elements to grid
+    if (postsGrid) {
+      visibleCards.forEach(card => {
+        postsGrid.appendChild(card);
+      });
+    }
+
+    // 4. Update stats count
+    if (statsCount) {
+      statsCount.textContent = visibleCards.length.toString();
+    }
+
+    // 5. Update empty state
+    if (visibleCards.length === 0) {
+      if (emptyState) emptyState.classList.remove('hidden');
+      if (postsGrid) postsGrid.classList.add('hidden');
+    } else {
+      if (emptyState) emptyState.classList.add('hidden');
+      if (postsGrid) postsGrid.classList.remove('hidden');
+    }
+  };
+
+  // Event Listeners
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value;
+      updateUI();
+    });
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      currentSort = (e.target as HTMLSelectElement).value;
+      updateUI();
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      currentCategory = chip.getAttribute('data-category') || 'Todas';
+      updateUI();
+    });
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      searchQuery = '';
+      currentCategory = 'Todas';
+      updateUI();
+    });
+  }
+
+  // Initial Run
+  updateUI();
+</script>

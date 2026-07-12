@@ -1,0 +1,74 @@
+---
+interface Props {
+  currentPath?: string;
+  navItems?: { label: string; href: string }[];
+  siteName?: string;
+}
+
+const { currentPath = '/', navItems = [], siteName = 'Melhores Reviews' } = Astro.props;
+
+const isActive = (path: string) => {
+  if (path === '/') return currentPath === '/' || currentPath === '';
+  return currentPath === path || currentPath.startsWith(path + '/');
+};
+---
+
+<header id="site-header" class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-xs">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-20 items-center">
+      <a href="/" class="flex items-center space-x-3 cursor-pointer group">
+        <div class="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-white text-xl shadow-xs transition-transform group-hover:scale-105">M</div>
+        <div>
+          <span class="block font-sans font-bold text-lg text-gray-900 tracking-tight leading-none group-hover:text-amber-500 transition-colors">{siteName}</span>
+          <span class="block text-[11px] text-gray-500 font-medium tracking-wide mt-0.5">Produtos com desconto</span>
+        </div>
+      </a>
+
+      <nav id="desktop-nav" class="hidden md:flex items-center space-x-8">
+        {navItems.map((item) => (
+          <a href={item.href} class={`font-sans text-sm font-medium transition-colors ${isActive(item.href) ? 'text-amber-500' : 'text-gray-600 hover:text-amber-500'}`}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="hidden lg:flex items-center space-x-2 bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full text-xs font-semibold border border-amber-100">
+        <svg class="w-3.5 h-3.5 text-amber-500 animate-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 21l8.982-5.097a9 9 0 0 0 1.341-1.341L21 9l-5.097.813a9 9 0 0 0-1.341 1.341L9.813 15.904Zm0 0L12 18m0-13a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" />
+        </svg>
+        <span>Guia de Compras 2026 Atualizado</span>
+      </div>
+
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-amber-500 hover:bg-gray-50 focus:outline-none" aria-expanded="false">
+          <svg id="menu-icon" class="w-6 h-6 block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 py-3 px-4 space-y-1 shadow-md">
+    {navItems.map((item) => (
+      <a href={item.href} class={`w-full text-left block px-3 py-2.5 rounded-md text-base font-medium ${isActive(item.href) ? 'bg-amber-50 text-amber-500' : 'text-gray-600 hover:bg-gray-50 hover:text-amber-500'}`}>
+        {item.label}
+      </a>
+    ))}
+  </div>
+</header>
+
+<script>
+  const button = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
+  if (button && menu && menuIcon && closeIcon) {
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+      menu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+  }
+</script>
