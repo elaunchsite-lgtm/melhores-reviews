@@ -11,6 +11,9 @@ interface Props {
 }
 
 const { title, description = config.siteDescription, currentPath = '/' } = Astro.props;
+const siteUrl = config.siteUrl || config.domain ? `https://${config.domain}` : Astro.site?.href || "http://localhost:4321";
+const pluginsHead = config._plugins?.head?.replace(/SITE_URL/g, siteUrl) || "";
+const pluginsBody = config._plugins?.body?.replace(/SITE_URL/g, siteUrl) || "";
 ---
 
 <!doctype html>
@@ -21,7 +24,7 @@ const { title, description = config.siteDescription, currentPath = '/' } = Astro
     <title>{title} | {config.siteName}</title>
     <meta name="description" content={description} />
     {config.favicon && <link rel="icon" href={config.favicon} />}
-    {config._plugins?.head && <Fragment set:html={config._plugins.head} />}
+    {pluginsHead && <Fragment set:html={pluginsHead} />}
   </head>
   <body class="min-h-screen flex flex-col bg-[#FAF9F5] text-gray-900 selection:bg-amber-500 selection:text-white">
     <Navbar currentPath={currentPath} navItems={config.navigation} siteName={config.siteName} />
@@ -29,5 +32,6 @@ const { title, description = config.siteDescription, currentPath = '/' } = Astro
       <slot />
     </main>
     <Footer siteName={config.siteName} description={config.siteDescription} />
+    {pluginsBody && <Fragment set:html={pluginsBody} />}
   </body>
 </html>
