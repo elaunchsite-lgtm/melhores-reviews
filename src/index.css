@@ -29,15 +29,126 @@ h1, h2, h3, h4, h5, h6 {
 .specs-table table { width:100%; border-collapse:collapse; }
 .specs-table td { padding:.5rem .75rem; border-bottom:1px solid #fde68a; font-size:.9rem; }
 
-.affiliate-cta-card { margin:2rem 0; padding:2rem; background:linear-gradient(135deg,#ea580c,#f97316); border-radius:16px; color:#fff; text-align:center; }
-.affiliate-cta-card h3 { font-size:1.3rem; margin-bottom:.5rem; color:#fff; }
-.affiliate-cta-card p { opacity:.9; margin-bottom:1rem; }
-.affiliate-img { width:100%; max-width:200px; border-radius:12px; margin:0 auto 1rem; display:block; }
-.affiliate-btns { display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center; margin:1rem 0; }
-.affiliate-btn { display:inline-block; padding:.7rem 1.5rem; border-radius:10px; font-weight:600; font-size:.9rem; text-decoration:none; transition:all .2s; background:#fff; color:#ea580c; }
-.affiliate-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.15); }
-.affiliate-btn.whatsapp { background:#25D366; color:#fff; }
-.affiliate-btn.secondary { background:rgba(255,255,255,.2); color:#fff; }
+/* ===== Affiliate Product Card (aff-box) ===== */
+.aff-box {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,.05);
+  margin: 2.5rem 0;
+  overflow: hidden;
+  transition: box-shadow .3s;
+}
+.aff-box:hover { box-shadow: 0 12px 30px -5px rgba(0,0,0,.08); }
+
+.aff-img-container {
+  width: 100%;
+  height: 200px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.aff-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  transition: opacity .3s ease;
+}
+.aff-img-placeholder {
+  font-size: 3rem;
+  opacity: .3;
+}
+
+.aff-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.aff-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.aff-desc {
+  font-size: .9rem;
+  color: #334155;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.aff-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .25rem;
+}
+
+.aff-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .7rem 1.3rem;
+  border-radius: 1rem;
+  font-weight: 800;
+  font-size: .85rem;
+  text-decoration: none;
+  transition: all .2s;
+  border: none;
+  cursor: pointer;
+}
+
+.aff-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  opacity: .95;
+}
+
+/* Platform-specific colors */
+.btn-amazon { background: #000; color: #fff; }
+.btn-amazon:hover { background: #232f3e; }
+.btn-mercadolivre { background: #FFE600; color: #000; }
+.btn-mercadolivre:hover { background: #f5d900; }
+.btn-shopee { background: #C03A1F; color: #fff; }
+.btn-shopee:hover { background: #a8321a; }
+.btn-aliexpress { background: #FF4747; color: #fff; }
+.btn-aliexpress:hover { background: #e63939; }
+.btn-whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37,211,102,.3);
+}
+.btn-whatsapp:hover { box-shadow: 0 4px 16px rgba(37,211,102,.4); }
+.btn-extra { background: #1e293b; color: #fff; }
+
+/* Desktop: side-by-side layout */
+@media(min-width: 768px) {
+  .aff-box {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .aff-img-container {
+    width: 220px;
+    height: auto;
+    min-height: 220px;
+    flex-shrink: 0;
+  }
+  .aff-content {
+    flex: 1;
+    padding: 2rem;
+  }
+}
+
+/* ===== Old shortcode blocks (keep for backward compat) ===== */
 
 .promo-banner { margin:2rem 0; padding:2rem; background:linear-gradient(135deg,#dc2626,#b91c1c); border-radius:16px; color:#fff; text-align:center; animation:pulse 2s infinite; }
 .promo-banner h3 { font-size:1.3rem; color:#fff; }
