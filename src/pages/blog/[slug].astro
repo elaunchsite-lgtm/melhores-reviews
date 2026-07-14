@@ -1,81 +1,54 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { blogPosts } from '../../data/posts';
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog');
-  return allPosts.map((post) => ({
-    params: { slug: post.id },
-    props: { post: { ...post.data, slug: post.id, body: post.body, Content: post.Content }, allPosts },
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
   }));
 }
 
-const { post, allPosts } = Astro.props;
-const posts = allPosts.map(p => ({ ...p.data, slug: p.id }));
+const { post } = Astro.props;
 
-// Find related reviews (same category, excluding current post)
-const relatedPosts = posts
+const relatedPosts = blogPosts
   .filter(p => p.category === post.category && p.slug !== post.slug)
   .slice(0, 3);
 
-// Fallback to any reviews if none in same category
-const finalRelated = relatedPosts.length > 0 
-  ? relatedPosts 
-  : posts.filter(p => p.slug !== post.slug).slice(0, 3);
-
-const currentYear = new Date().getFullYear();
+const finalRelated = relatedPosts.length > 0
+  ? relatedPosts
+  : blogPosts.filter(p => p.slug !== post.slug).slice(0, 3);
 ---
 
 <Layout title={post.title} description={post.description} currentPath={`/blog/${post.slug}`}>
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 pb-20">
-    {/* Back navigation */}
-    <a
-      href="/blog"
-      class="inline-flex items-center space-x-2 text-sm font-semibold text-gray-500 hover:text-amber-500 transition-colors cursor-pointer group"
-    >
-      <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-      </svg>
-      <span>Voltar para análises</span>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 pb-20">
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      Voltar para análises
     </a>
 
-    {/* Article Header */}
-    <header class="space-y-6 text-left">
-      <div class="flex items-center space-x-3">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-50 text-amber-600">
+    <header class="space-y-6">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">
           {post.category}
         </span>
-        <span class="text-gray-400 text-xs flex items-center">
-          <svg class="w-3.5 h-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-          {post.readTime} de leitura
-        </span>
-        <span class="text-gray-400 text-xs flex items-center">
-          <svg class="w-3.5 h-3.5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-          </svg>
-          {post.date}
-        </span>
+        <span class="text-xs text-gray-400">{post.readTime} de leitura</span>
       </div>
 
-      <h1 class="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-gray-900 leading-tight tracking-tight">
+      <div>
+        <span class="text-xs text-gray-400">{post.date}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
         {post.title}
       </h1>
-
-      <p class="text-gray-500 text-base sm:text-lg leading-relaxed font-light">
+      <p class="text-lg text-gray-500 leading-relaxed">
         {post.description}
       </p>
 
-      {/* Author Bio Box */}
       {post.author && typeof post.author === 'object' ? (
         <div class="flex items-center space-x-3.5 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-          <img
-            src={post.author.avatar}
-            alt={post.author.name}
-            referrerPolicy="no-referrer"
-            class="w-11 h-11 rounded-full object-cover ring-2 ring-amber-100"
-          />
+          <img src={post.author.avatar} alt={post.author.name} referrerPolicy="no-referrer" class="w-11 h-11 rounded-full object-cover ring-2 ring-amber-100" />
           <div>
             <span class="block text-sm font-bold text-gray-900">{post.author.name}</span>
             <span class="block text-xs text-gray-500">{post.author.role} • Analista Técnico Oficial</span>
@@ -83,408 +56,87 @@ const currentYear = new Date().getFullYear();
         </div>
       ) : post.author ? (
         <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-          <div class="w-11 h-11 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm uppercase">
-            {String(post.author)[0]}
-          </div>
-          <div>
-            <span class="block text-sm font-bold text-gray-900">{post.author}</span>
-            <span class="block text-xs text-gray-500">Autor</span>
-          </div>
+          <div class="w-11 h-11 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm uppercase">{String(post.author)[0]}</div>
+          <div><span class="block text-sm font-bold text-gray-900">{post.author}</span></div>
         </div>
       ) : null}
     </header>
 
-    {/* Featured Image */}
-    <div class="relative aspect-video w-full rounded-3xl overflow-hidden bg-gray-100 shadow-xs border border-gray-100">
-      <img
-        src={post.image}
-        alt={post.title}
-        referrerPolicy="no-referrer"
-        class="w-full h-full object-cover"
-      />
-    </div>
+    {post.image && (
+      <div class="relative aspect-video w-full rounded-3xl overflow-hidden bg-gray-100 shadow-xs border border-gray-100">
+        <img src={post.image} alt={post.title} referrerPolicy="no-referrer" class="w-full h-full object-cover" />
+      </div>
+    )}
 
-    {/* Comparison Specifications Table / Box */}
-    <section class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6 text-left">
-      <h3 class="font-sans font-bold text-lg text-gray-900 border-b border-gray-50 pb-3 flex items-center">
-        <span class="mr-2">📊</span> Ficha Técnica & Classificação
-      </h3>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        {/* List of Specs */}
-        <div class="space-y-3">
-          {post.specs.map((spec) => (
-            <div class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
-              <span class="text-gray-400 font-medium">{spec.name}</span>
-              <span class="text-gray-900 font-bold text-right">{spec.value}</span>
-            </div>
-          ))}
+    {post.specs && (
+      <section class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6">
+        <h2 class="text-xl font-bold text-gray-900">📊 Ficha Técnica & Classificação</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <tbody class="divide-y divide-gray-100">
+              {post.specs.map((spec) => (
+                <tr><td class="py-3 pr-6 font-medium text-gray-600">{spec.label}</td><td class="py-3 text-gray-900">{spec.value}</td></tr>
+              ))}
+              <tr>
+                <td class="py-3 pr-6 font-medium text-gray-600">⭐ Nota Geral</td>
+                <td class="py-3">
+                  <div class="flex items-center gap-2">
+                    <div class="flex">{Array.from({length:5}).map((_,star) => <svg class={`w-5 h-5 ${star <= Math.round(post.rating) ? 'text-amber-500 fill-amber-400' : 'text-gray-200'}`} viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}</div>
+                    <span class="text-3xl font-extrabold text-gray-900">{post.rating}</span>
+                    <span class="text-xs text-gray-400">/10</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
+    )}
 
-        {/* Rating Meter */}
-        <div class="bg-amber-50/50 rounded-2xl p-6 border border-amber-100/50 text-center space-y-4">
-          <span class="block text-xs text-amber-800 font-bold uppercase tracking-wider">Avaliação do Especialista</span>
-          <div class="flex items-center justify-center space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <svg 
-                class={`w-8 h-8 ${star <= Math.round(post.rating) ? 'text-amber-500 fill-amber-400' : 'text-gray-200'}`} 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="currentColor"
-              >
-                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
-              </svg>
-            ))}
-          </div>
-          <div>
-            <span class="text-4xl font-sans font-bold text-gray-900">{post.rating}</span>
-            <span class="text-gray-400 text-sm"> / 5.0</span>
-          </div>
-          <p class="text-xs text-amber-700 leading-relaxed max-w-xs mx-auto font-medium">
-            Nota baseada em testes práticos de usabilidade, durabilidade e custo-benefício.
-          </p>
+    {post.sections && post.sections.map((section) => (
+      <section class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">{section.heading}</h2>
+        <div class="prose prose-gray max-w-none" set:html={section.content} />
+      </section>
+    ))}
+
+    {post.pros && post.cons && (
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="bg-emerald-50 border border-emerald-100 rounded-3xl p-6">
+          <h3 class="font-bold text-emerald-800 mb-3">✅ Prós / Vantagens</h3>
+          <ul class="space-y-2">{post.pros.map((pro) => <li class="flex items-start gap-2 text-sm text-emerald-700"><span class="mt-0.5">✓</span> {pro}</li>)}</ul>
+        </div>
+        <div class="bg-red-50 border border-red-100 rounded-3xl p-6">
+          <h3 class="font-bold text-red-800 mb-3">❌ Contras / Desvantagens</h3>
+          <ul class="space-y-2">{post.cons.map((con) => <li class="flex items-start gap-2 text-sm text-red-700"><span class="mt-0.5">✗</span> {con}</li>)}</ul>
         </div>
       </div>
-    </section>
+    )}
 
-    {/* Affiliate conversion CTA Box (Top high visibility box) */}
-    <section class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-6 sm:p-8 border border-amber-200/60 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-      <div class="space-y-2.5 text-center md:text-left">
-        <div class="inline-flex items-center space-x-1.5 bg-amber-500 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-          <svg class="w-3.5 h-3.5 fill-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.116 60.116 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-          </svg>
-          <span>Melhor Preço Garantido</span>
-        </div>
-        <h4 class="font-sans font-bold text-lg sm:text-xl text-gray-900">
-          Adquira o seu com o Menor Preço de {currentYear}
-        </h4>
-        <p class="text-gray-500 text-xs sm:text-sm">
-          Compre de forma totalmente segura na loja parceira recomendada pelo nosso portal.
-        </p>
-        <div class="flex items-center justify-center md:justify-start space-x-4 pt-1">
-          <span class="text-gray-400 text-xs sm:text-sm">Por apenas</span>
-          <span class="text-2xl font-sans font-extrabold text-amber-600">{post.affiliatePrice}</span>
-          <span class="text-gray-400 text-xs line-through">R$ {(parseFloat(post.affiliatePrice.replace(/[^\d]/g, '')) / 80).toFixed(2).replace('.', ',')}</span>
-        </div>
-      </div>
-
-      <div class="space-y-3 w-full md:w-auto shrink-0 text-center">
-        <a
-          href={post.affiliateLink}
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          class="w-full md:w-auto inline-flex items-center justify-center space-x-2 bg-[#d9730d] hover:bg-amber-600 active:bg-amber-700 text-white font-bold py-4 px-8 rounded-2xl shadow-md hover:shadow-lg transition-all cursor-pointer text-base"
-        >
-          <span>Ver Preço na {post.affiliateStore}</span>
-          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-          </svg>
+    {post.affiliateLink && (
+      <div class="bg-amber-50 border border-amber-200 rounded-3xl p-6 text-center">
+        <h3 class="font-bold text-amber-900 mb-2">🛒 Compre o {post.title.split(':')[0]} com Desconto Especial</h3>
+        <a href={post.affiliateLink} target="_blank" rel="nofollow noopener sponsored" class="inline-flex items-center gap-2 bg-amber-500 text-white px-6 py-3 rounded-full font-bold hover:bg-amber-600 transition-colors">
+          Ver Menor Preço na {post.affiliateStore}
         </a>
-        <div class="flex items-center justify-center space-x-1.5 text-green-600 text-xs font-semibold">
-          <svg class="w-4 h-4 fill-green-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-          </svg>
-          <span>Link de afiliado seguro verificado</span>
-        </div>
       </div>
-    </section>
+    )}
 
-    {/* Main Review Text content */}
-    <article class="prose prose-amber max-w-none text-gray-700 leading-relaxed space-y-8 font-sans text-left">
-      {post.sections.map((section) => (
-        <div class="space-y-3">
-          <h2 class="font-sans font-bold text-xl sm:text-2xl text-gray-900 tracking-tight pt-2">
-            {section.title}
-          </h2>
-          <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
-            {section.content}
-          </p>
-        </div>
-      ))}
-    </article>
-
-    {/* Dynamic Pros and Cons list */}
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-      {/* Pros card */}
-      <div class="bg-emerald-50/20 border border-emerald-100 rounded-3xl p-6 sm:p-8 space-y-4">
-        <h4 class="font-sans font-bold text-base sm:text-lg text-emerald-800 flex items-center space-x-2">
-          <span class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
-            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-            </svg>
-          </span>
-          <span>Prós / Vantagens</span>
-        </h4>
-        <ul class="space-y-3">
-          {post.pros.map((pro) => (
-            <li class="flex items-start space-x-2.5 text-gray-600 text-sm">
-              <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              <span>{pro}</span>
-            </li>
+    {finalRelated.length > 0 && (
+      <section class="border-t border-gray-100 pt-12">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">🤩 Análises Relacionadas</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {finalRelated.map(rp => (
+            <a href={`/blog/${rp.slug}`} class="group bg-white border border-gray-100 rounded-2xl p-5 hover:shadow-md transition-shadow">
+              <h3 class="font-semibold text-gray-900 group-hover:text-amber-500 transition-colors">{rp.title}</h3>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="text-xs text-gray-400">{rp.category}</span>
+                <span class="text-xs text-amber-500">★ {rp.rating}</span>
+              </div>
+            </a>
           ))}
-        </ul>
-      </div>
-
-      {/* Cons card */}
-      <div class="bg-rose-50/20 border border-rose-100 rounded-3xl p-6 sm:p-8 space-y-4">
-        <h4 class="font-sans font-bold text-base sm:text-lg text-rose-800 flex items-center space-x-2">
-          <span class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
-            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </span>
-          <span>Contras / Desvantagens</span>
-        </h4>
-        <ul class="space-y-3">
-          {post.cons.map((con) => (
-            <li class="flex items-start space-x-2.5 text-gray-600 text-sm">
-              <svg class="w-4 h-4 text-rose-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-              <span>{con}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-
-    {/* Featured checklist */}
-    <section class="bg-gray-50 rounded-3xl p-6 sm:p-8 border border-gray-100 space-y-4 text-left">
-      <h4 class="font-sans font-bold text-base sm:text-lg text-gray-900 flex items-center">
-        <span class="mr-2">🔍</span> Destaques Tecnológicos & Recursos
-      </h4>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {post.features.map((feature) => (
-          <div class="flex items-start space-x-2">
-            <div class="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 mt-0.5">
-              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-            </div>
-            <span class="text-gray-600 text-sm">{feature}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    {/* Verdict section with highlight summary */}
-    <section class="border-l-4 border-amber-500 bg-amber-50/30 rounded-r-3xl p-6 sm:p-8 space-y-3 text-left">
-      <h4 class="font-sans font-bold text-base sm:text-lg text-amber-900 flex items-center">
-        <span class="mr-2">💡</span> O Veredito do Analista
-      </h4>
-      <p class="text-gray-700 text-sm sm:text-base leading-relaxed italic">
-        "{post.verdict}"
-      </p>
-    </section>
-
-    {/* Affiliate conversion CTA Box (Bottom repetition box) */}
-    <section class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-8 text-white shadow-md text-center space-y-6">
-      <div class="max-w-xl mx-auto space-y-2">
-        <span class="bg-amber-400/30 text-white border border-amber-300/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-          Oferta Imperdível por Tempo Limitado
-        </span>
-        <h3 class="font-sans font-bold text-xl sm:text-2xl">
-          Compre o {post.title.split(':')[0]} com Desconto Especial
-        </h3>
-        <p class="text-amber-50 text-xs sm:text-sm">
-          Clique no botão abaixo para garantir o menor preço, frete grátis e a segurança da loja oficial {post.affiliateStore}.
-        </p>
-      </div>
-
-      <div class="flex flex-col items-center space-y-3 max-w-xs mx-auto">
-        <a
-          href={post.affiliateLink}
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-          class="w-full inline-flex items-center justify-center space-x-2 bg-white text-orange-600 hover:bg-amber-50 active:bg-amber-100 font-bold py-4 px-6 rounded-2xl shadow-xs transition-all cursor-pointer text-sm"
-        >
-          <span>Ver Menor Preço na {post.affiliateStore}</span>
-          <svg class="w-4 h-4 text-orange-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-          </svg>
-        </a>
-        <span class="text-[10px] text-amber-100">Estoque limitado com preço promocional de frete</span>
-      </div>
-    </section>
-
-    {/* Comments section */}
-    <section id="comentarios" class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-8 text-left">
-      <h3 class="font-sans font-bold text-lg text-gray-900 pb-3 border-b border-gray-50 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-amber-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 18c-.987 0-1.912-.401-2.594-1.1a10.134 10.134 0 0 1-1.316-2.529 8.386 8.386 0 0 1-.3-2.371c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-        </svg>
-        <span>Comentários (<span id="comments-count">2</span>)</span>
-      </h3>
-
-      {/* Comment form */}
-      <form id="comment-form" class="space-y-4">
-        <p class="text-xs text-gray-400 font-medium">Deixe sua dúvida ou opinião sobre o produto:</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <input
-            id="comment-name"
-            type="text"
-            placeholder="Seu Nome completo..."
-            required
-            class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-2.5 px-4 text-xs text-gray-900 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
-          />
-          <div class="text-[10px] text-gray-400 flex items-center justify-end">
-            Seu e-mail não será publicado.
-          </div>
         </div>
-        <textarea
-          id="comment-text"
-          placeholder="Escreva sua mensagem aqui..."
-          rows="4"
-          required
-          class="w-full bg-gray-50/50 border border-gray-200 rounded-xl py-2.5 px-4 text-xs text-gray-900 placeholder-gray-400 focus:outline-hidden focus:border-amber-500 focus:bg-white transition-all font-sans"
-        ></textarea>
-        
-        <button
-          type="submit"
-          class="inline-flex items-center space-x-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 rounded-xl transition-colors cursor-pointer text-xs"
-        >
-          <span>Enviar Comentário</span>
-        </button>
-
-        <div id="comment-success-alert" class="hidden p-3.5 bg-green-50 text-green-700 text-xs rounded-xl border border-green-100">
-          Obrigado! Seu comentário foi postado com sucesso e está visível abaixo.
-        </div>
-      </form>
-
-      {/* Comments Feed */}
-      <div id="comments-feed" class="space-y-6 pt-4 border-t border-gray-50">
-        <div class="flex space-x-3.5 text-left border-b border-gray-50/60 pb-6 last:border-0 last:pb-0">
-          <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0 uppercase">
-            Ma
-          </div>
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2">
-              <span class="text-xs font-bold text-gray-900">Marcos Vinícius</span>
-              <span class="text-[10px] text-gray-400">02/07/2026</span>
-            </div>
-            <p class="text-xs text-gray-600 leading-relaxed">
-              Excelente review! Me ajudou muito a decidir qual comprar. Peguei o modelo indicado de custo-benefício e chegou ontem. Sensacional!
-            </p>
-          </div>
-        </div>
-
-        <div class="flex space-x-3.5 text-left border-b border-gray-50/60 pb-6 last:border-0 last:pb-0">
-          <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0 uppercase">
-            Cl
-          </div>
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2">
-              <span class="text-xs font-bold text-gray-900">Clarice Prado</span>
-              <span class="text-[10px] text-gray-400">29/06/2026</span>
-            </div>
-            <p class="text-xs text-gray-600 leading-relaxed">
-              Gostei muito da tabela comparativa e da seção de prós e contras. Bem direta ao ponto e sem enrolação.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* Related Analyses Section */}
-    <section class="space-y-6 pt-6 text-left">
-      <h3 class="font-sans font-bold text-lg text-gray-900 flex items-center">
-        <span>🤩</span> <span class="ml-2">Análises Relacionadas de {post.category}</span>
-      </h3>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {finalRelated.map((relatedPost) => (
-          <a
-            href={`/blog/${relatedPost.slug}`}
-            class="bg-white rounded-2xl border border-gray-100 p-4 hover:border-amber-200 shadow-2xs hover:shadow-xs transition-all cursor-pointer group flex flex-col justify-between h-full"
-          >
-            <div class="space-y-2">
-              <img
-                src={relatedPost.image}
-                alt={relatedPost.title}
-                referrerPolicy="no-referrer"
-                class="aspect-video w-full rounded-xl object-cover"
-              />
-              <span class="inline-block text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full uppercase">
-                {relatedPost.category}
-              </span>
-              <h5 class="font-sans font-bold text-xs sm:text-sm text-gray-900 leading-snug group-hover:text-amber-500 transition-colors line-clamp-2">
-                {relatedPost.title}
-              </h5>
-            </div>
-            <div class="flex items-center justify-between text-[11px] text-gray-400 mt-3 pt-2 border-t border-gray-50">
-              <span>{relatedPost.date}</span>
-              <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-amber-500 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-              </svg>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  </div>
+      </section>
+    )}
+  </article>
 </Layout>
-
-<script>
-  // Handle client-side comments dynamic updates
-  const form = document.getElementById('comment-form') as HTMLFormElement;
-  const nameInput = document.getElementById('comment-name') as HTMLInputElement;
-  const textInput = document.getElementById('comment-text') as HTMLInputElement;
-  const commentsFeed = document.getElementById('comments-feed');
-  const countSpan = document.getElementById('comments-count');
-  const successAlert = document.getElementById('comment-success-alert');
-
-  let commentCount = 2;
-
-  if (form && nameInput && textInput && commentsFeed && countSpan && successAlert) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const name = nameInput.value.trim();
-      const text = textInput.value.trim();
-      
-      if (name && text) {
-        // Increment count
-        commentCount++;
-        countSpan.textContent = commentCount.toString();
-        
-        // Format today's date
-        const today = new Date().toLocaleDateString('pt-BR');
-        const initialLetters = name.slice(0, 2).toUpperCase();
-
-        // Create new element
-        const commentDiv = document.createElement('div');
-        commentDiv.className = 'flex space-x-3.5 text-left border-b border-gray-50/60 pb-6 last:border-0 last:pb-0';
-        commentDiv.innerHTML = `
-          <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0 uppercase">
-            ${initialLetters}
-          </div>
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2">
-              <span class="text-xs font-bold text-gray-900">${name}</span>
-              <span class="text-[10px] text-gray-400">${today}</span>
-            </div>
-            <p class="text-xs text-gray-600 leading-relaxed">
-              ${text}
-            </p>
-          </div>
-        `;
-
-        // Prepend to feed
-        commentsFeed.insertBefore(commentDiv, commentsFeed.firstChild);
-        
-        // Reset fields
-        nameInput.value = '';
-        textInput.value = '';
-
-        // Show success alert
-        successAlert.classList.remove('hidden');
-        setTimeout(() => {
-          successAlert.classList.add('hidden');
-        }, 4000);
-      }
-    });
-  }
-</script>
