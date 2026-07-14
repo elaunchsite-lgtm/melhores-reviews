@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
   return allPosts.map((post) => ({
     params: { slug: post.id },
-    props: { post, allPosts },
+    props: { post: { ...post.data, slug: post.id, body: post.body, Content: post.Content }, allPosts },
   }));
 }
 
@@ -68,18 +68,30 @@ const currentYear = new Date().getFullYear();
       </p>
 
       {/* Author Bio Box */}
-      <div class="flex items-center space-x-3.5 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-        <img
-          src={post.author.avatar}
-          alt={post.author.name}
-          referrerPolicy="no-referrer"
-          class="w-11 h-11 rounded-full object-cover ring-2 ring-amber-100"
-        />
-        <div>
-          <span class="block text-sm font-bold text-gray-900">{post.author.name}</span>
-          <span class="block text-xs text-gray-500">{post.author.role} • Analista Técnico Oficial</span>
+      {post.author && typeof post.author === 'object' ? (
+        <div class="flex items-center space-x-3.5 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+          <img
+            src={post.author.avatar}
+            alt={post.author.name}
+            referrerPolicy="no-referrer"
+            class="w-11 h-11 rounded-full object-cover ring-2 ring-amber-100"
+          />
+          <div>
+            <span class="block text-sm font-bold text-gray-900">{post.author.name}</span>
+            <span class="block text-xs text-gray-500">{post.author.role} • Analista Técnico Oficial</span>
+          </div>
         </div>
-      </div>
+      ) : post.author ? (
+        <div class="flex items-center space-x-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+          <div class="w-11 h-11 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm uppercase">
+            {String(post.author)[0]}
+          </div>
+          <div>
+            <span class="block text-sm font-bold text-gray-900">{post.author}</span>
+            <span class="block text-xs text-gray-500">Autor</span>
+          </div>
+        </div>
+      ) : null}
     </header>
 
     {/* Featured Image */}
