@@ -1,12 +1,12 @@
 ﻿---
-title: "Os 10 Melhores Notebooks de 2026"
+title: "Smartwatch: Os 7 Melhores Modelos"
 description: "Review completo e analise detalhada."
-date: "10/01/2026"
-author: "Carlos Mendes"
+date: "01/02/2026"
+author: "Pedro Oliveira"
 category: "Tecnologia"
-rating: 9.2
+rating: 8.8
 ---
 
-# Os 10 Melhores Notebooks de 2026
+# Smartwatch: Os 7 Melhores Modelos
 
 Review completo e analise detalhada deste produto.
