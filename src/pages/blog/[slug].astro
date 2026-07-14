@@ -21,7 +21,7 @@ const relatedPosts = posts
 // Fallback to any reviews if none in same category
 const finalRelated = relatedPosts.length > 0 
   ? relatedPosts 
-  : blogPosts.filter(p => p.slug !== post.slug).slice(0, 3);
+  : posts.filter(p => p.slug !== post.slug).slice(0, 3);
 
 const currentYear = new Date().getFullYear();
 ---
