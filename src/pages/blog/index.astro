@@ -1,10 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ReviewCard from '../../components/ReviewCard.astro';
-import { blogPosts } from '../../data/posts';
+import { getCollection } from 'astro:content';
 
-// Get unique categories dynamically
-const availableCategories = ['Todas', ...Array.from(new Set(blogPosts.map(p => p.category)))];
+const allPosts = await getCollection('blog');
+const posts = allPosts.map(p => ({ ...p.data, slug: p.id }));
+const availableCategories = ['Todas', ...Array.from(new Set(posts.map(p => p.category)))];
 ---
 
 <Layout title="Blog de Reviews" currentPath="/blog">

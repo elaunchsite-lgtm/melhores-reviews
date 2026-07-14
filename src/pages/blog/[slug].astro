@@ -1,18 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { blogPosts } from '../../data/posts';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  return blogPosts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
+  const allPosts = await getCollection('blog');
+  return allPosts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, allPosts },
   }));
 }
 
-const { post } = Astro.props;
+const { post, allPosts } = Astro.props;
+const posts = allPosts.map(p => ({ ...p.data, slug: p.id }));
 
 // Find related reviews (same category, excluding current post)
-const relatedPosts = blogPosts
+const relatedPosts = posts
   .filter(p => p.category === post.category && p.slug !== post.slug)
   .slice(0, 3);
 
