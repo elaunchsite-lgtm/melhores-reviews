@@ -14,6 +14,7 @@ const { title, description = config.siteDescription, currentPath = '/' } = Astro
 const siteUrl = config.siteUrl || config.domain ? `https://${config.domain}` : Astro.site?.href || "http://localhost:4321";
 const pluginsHead = config._plugins?.head?.replace(/SITE_URL/g, siteUrl) || "";
 const pluginsBody = config._plugins?.body?.replace(/SITE_URL/g, siteUrl) || "";
+const primary = config.primaryColor || "#f59e0b";
 ---
 
 <!doctype html>
@@ -23,6 +24,7 @@ const pluginsBody = config._plugins?.body?.replace(/SITE_URL/g, siteUrl) || "";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | {config.siteName}</title>
     <meta name="description" content={description} />
+    <style>:root { --primary: ${primary}; }</style>
     {config.favicon && <link rel="icon" href={config.favicon} />}
     {pluginsHead && <Fragment set:html={pluginsHead} />}
   </head>

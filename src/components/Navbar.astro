@@ -22,10 +22,10 @@ const isActive = (path: string) => {
         {config.logoUrl ? (
           <img src={config.logoUrl} alt={siteName} class="h-10 max-w-[180px] object-contain" />
         ) : (
-          <div class="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-white text-xl shadow-xs transition-transform group-hover:scale-105">M</div>
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white text-xl shadow-xs transition-transform group-hover:scale-105" style={`background-color: ${config.primaryColor || '#f59e0b'}`}>M</div>
         )}
         <div>
-          <span class="block font-sans font-bold text-lg text-gray-900 tracking-tight leading-none group-hover:text-amber-500 transition-colors">{siteName}</span>
+          <span class="block font-sans font-bold text-lg text-gray-900 tracking-tight leading-none group-hover:text-amber-500 transition-colors" style={`--tw-text-opacity:1;color:${config.primaryColor || '#f59e0b'}`}>{siteName}</span>
           <span class="block text-[11px] text-gray-500 font-medium tracking-wide mt-0.5">Produtos com desconto</span>
         </div>
       </a>
