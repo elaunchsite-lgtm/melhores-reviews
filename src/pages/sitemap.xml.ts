@@ -14,13 +14,6 @@ export async function GET() {
     const slug = post.id.replace(/^blog\//, "").replace(/\.md$/, "");
     xml += `  <url><loc>${domain}/blog/${slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
   }
-  try {
-    const stories = await import("../data/stories.json");
-    const storyList = Array.isArray(stories.default) ? stories.default : [];
-    for (const story of storyList) {
-      xml += `  <url><loc>${domain}/stories/${story.slug}.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n`;
-    }
-  } catch {}
   xml += "</urlset>";
   return new Response(xml, { headers: { "Content-Type": "application/xml" } });
 }
