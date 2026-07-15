@@ -3,8 +3,8 @@ import { config } from "../lib/config";
 
 export async function GET() {
   const posts = await getCollection("blog");
-  const domain = "https://melhoresreviews.vercel.app";
-  const pages = ["/", "/blog", "/sobre", "/contato", "/categorias", "/privacidade", "/termos"];
+  const domain = config.siteUrl || "https://melhoresreviews.vercel.app";
+  const pages = ["/", "/blog", "/webstories", "/sobre", "/contato", "/categorias", "/politica-de-privacidade", "/termos-de-uso"];
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
   for (const page of pages) {
@@ -12,8 +12,15 @@ export async function GET() {
   }
   for (const post of posts) {
     const slug = post.id.replace(/^blog\//, "").replace(/\.md$/, "");
-    xml += `  <url><loc>${domain}/blog/${slug}</loc><lastmod>${post.data.publishedAt.toISOString()}</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
+    xml += `  <url><loc>${domain}/blog/${slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>\n`;
   }
+  try {
+    const stories = await import("../data/stories.json");
+    const storyList = Array.isArray(stories.default) ? stories.default : [];
+    for (const story of storyList) {
+      xml += `  <url><loc>${domain}/stories/${story.slug}.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>\n`;
+    }
+  } catch {}
   xml += "</urlset>";
   return new Response(xml, { headers: { "Content-Type": "application/xml" } });
 }
