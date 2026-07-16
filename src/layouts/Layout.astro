@@ -24,7 +24,7 @@ const primary = config.primaryColor || "#f59e0b";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | {config.siteName}</title>
     <meta name="description" content={description} />
-    <style>:root { --primary: ${primary}; }</style>
+    <style>:root { --primary: ${primary}; --secondary: ${config.secondaryColor || '#ea580c'}; }</style>
     {config.favicon && <link rel="icon" href={config.favicon} />}
     {pluginsHead && <Fragment set:html={pluginsHead} />}
   </head>

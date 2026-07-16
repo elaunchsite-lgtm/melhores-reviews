@@ -107,7 +107,7 @@ import { blogPosts, categories } from '../data/posts';
         <p class="text-gray-400 text-sm">Sem análises disponíveis nesta categoria temporariamente.</p>
       </div>
 
-      <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div id="posts-grid" data-no-edit class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {blogPosts.map((post) => (
           <div class="post-card-wrapper" data-category={post.category.toLowerCase()}>
             <ReviewCard post={post} />

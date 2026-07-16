@@ -13,7 +13,7 @@ const gridPosts = blogPosts.filter(p => p.id !== '1');
 <Layout title="Melhores Reviews - Produtos com Desconto" currentPath="/">
   <div class="space-y-16 pb-16">
     {/* Hero Section */}
-    <section class="bg-gradient-to-b from-amber-50/70 to-transparent pt-12 pb-6 px-4 sm:px-6 lg:px-8">
+    <section id="page-hero" class="bg-gradient-to-b from-amber-50/70 to-transparent pt-12 pb-6 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto text-center space-y-6">
         {/* Tag "Ofertas Imperdíveis" matching image */}
         <div class="inline-flex items-center space-x-2 bg-red-50 text-red-700 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border border-red-100 shadow-3xs">
@@ -31,7 +31,7 @@ const gridPosts = blogPosts.filter(p => p.id !== '1');
         </p>
 
         {/* Featured Post Card matching reference image style */}
-        <div class="mt-12 bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 max-w-5xl mx-auto overflow-hidden">
+        <div data-no-edit class="mt-12 bg-white rounded-3xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 max-w-5xl mx-auto overflow-hidden">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
             {/* Image Column */}
             <div class="md:col-span-6 relative aspect-video md:aspect-auto min-h-[250px] md:min-h-[400px] bg-gray-50">
@@ -126,7 +126,7 @@ const gridPosts = blogPosts.filter(p => p.id !== '1');
       </div>
 
       {/* 3x3 Card Grid matching reference image */}
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div data-no-edit class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {gridPosts.map((post) => (
           <ReviewCard post={post} />
         ))}

@@ -17,7 +17,7 @@ const availableCategories = ['Todas', ...Array.from(new Set(blogPosts.map(p => p
         </button>
       ))}
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div data-no-edit class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {blogPosts.map(post => (
         <a href={`/blog/${post.slug}`} class="group">
           <ReviewCard post={post} />
